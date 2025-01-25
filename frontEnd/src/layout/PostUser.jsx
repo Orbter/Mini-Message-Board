@@ -1,5 +1,5 @@
 import { UserComponent } from '../components/UserComponent';
-function Post() {
+function PostUser() {
   return (
     <div className='bg-white border-spacing-1 border-customGrayBorder flex flex-col'>
       <div>{UserComponent}</div>
@@ -16,4 +16,4 @@ function Post() {
     </div>
   );
 }
-export { Post };
+export { PostUser };
