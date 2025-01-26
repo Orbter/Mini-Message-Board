@@ -101,15 +101,15 @@ const posts = [
 
 function HomePage() {
   return (
-    <div>
+    <div className=''>
       <Nav />
-      <div>
+      <div className='flex justify-center'>
         <PostUser />
       </div>
       <div>
-        {posts.map((post, index) => {
-          <PostFeed post={post} key={index} />;
-        })}
+        {posts.map((post, index) => (
+          <PostFeed post={post} key={index} />
+        ))}
       </div>
     </div>
   );

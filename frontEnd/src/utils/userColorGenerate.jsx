@@ -5,4 +5,4 @@ function userColorGenerate() {
   const hexColor = chroma.hsl(randomNumber, 0.34, 0.81).hex();
   return hexColor;
 }
-export default { userColorGenerate };
+export { userColorGenerate };

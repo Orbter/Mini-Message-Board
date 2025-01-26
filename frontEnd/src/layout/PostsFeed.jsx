@@ -2,32 +2,113 @@ import { UserComponent } from '../components/UserComponent';
 import comment from '../assets/comment.svg';
 import repost from '../assets/repost.svg';
 import emptyHeart from '../assets/emptyHeart.svg';
-
+import redBorderHeart from '../assets/fullHeart.svg';
+import blueRepost from '../assets/blueRepost.svg';
+import { useRef, useEffect, useState } from 'react';
 function PostFeed({ post }) {
+  const [isPressed, setIsPressed] = useState({ likes: false, repost: false });
+  const [isHover, setIsHover] = useState({
+    likes: false,
+    repost: false,
+  });
+  function hoverChanger(svgName) {
+    if (svgName === 'heart') {
+      setIsHover((prevState) => ({
+        ...prevState,
+        likes: true,
+      }));
+    } else if (svgName === 'repost') {
+      setIsHover((prevState) => ({
+        ...prevState,
+        repost: true,
+      }));
+    }
+  }
+  function hoverLeave(svgName) {
+    if (svgName === 'heart') {
+      setIsHover((prevState) => ({
+        ...prevState,
+        likes: false,
+      }));
+    } else if (svgName === 'repost') {
+      setIsHover((prevState) => ({
+        ...prevState,
+        repost: false,
+      }));
+    }
+  }
   return (
-    <div className='flex flex-col inter'>
+    <div className='flex flex-col inter bg-[#FDFFFD] p-4 cursor-pointer border-b border-[#D2D4D7]'>
       <div>
-        <div className='flex'>
-          <UserComponent name={post.name} />
-          <h4 className='text-[#938B8B] font-medium'>{`@${post.name}`}</h4>
+        <div className='flex justify-between'>
+          <div className='flex gap-2'>
+            <UserComponent name={post.name} />
+            <h4 className='text-[#938B8B] font-medium flex items-center'>{`@${post.name}`}</h4>
+          </div>
+          <h4 className='flex items-center text-base'>{post.date}</h4>
         </div>
-        <h4>{post.date}</h4>
       </div>
       <div>
-        <p>{post.text}</p>
+        <p className='mb-2'>{post.text}</p>
       </div>
-      <div className='flex roboto'>
-        <div className='flex text-[#838594]'>
-          <img src={comment} />
-          <p>{post.commentsCount}</p>
+      <div className='flex roboto gap-4 justify-end text-sm'>
+        <div className='flex text-[#838594] items-center '>
+          <div className=' flex rounded-full  w-8 h-8 items-center justify-center'>
+            <div className='w-5 h-4 mt-1'>
+              <img src={comment} className='w-full h-full object-cover' />
+            </div>
+          </div>
+          <p className='mt-1'>{post.commentsCount}</p>
         </div>
-        <div>
-          <img src={repost} />
-          <p>{post.reposts}</p>
+        <div
+          className='flex text-[#838594] items-center '
+          onMouseEnter={() => hoverChanger('repost')}
+          onMouseLeave={() => hoverLeave('repost')}
+        >
+          {isHover.repost ? (
+            <div
+              className={`rounded-full w-7 h-7 flex items-center justify-center ${
+                isHover.repost ? 'bg-[#41ABF9] bg-opacity-25' : ''
+              }`}
+            >
+              <div className='w-5 h-4 '>
+                <img src={blueRepost} className='w-full h-full object-cover ' />
+              </div>
+            </div>
+          ) : (
+            <div className='rounded-full  w-7 h-7 flex items-center justify-center'>
+              <div className='w-5 h-4 '>
+                <img src={repost} className='w-full h-full object-cover ' />
+              </div>
+            </div>
+          )}
+
+          <p className={isHover.repost ? 'text-[#41ABF9]' : ''}>
+            {post.reposts}
+          </p>
         </div>
-        <div>
-          <img src={emptyHeart} />
-          <p>{post.likes}</p>
+        <div
+          className='flex text-[#838594] items-center'
+          onMouseEnter={() => hoverChanger('heart')}
+          onMouseLeave={() => hoverLeave('heart')}
+        >
+          <div
+            className={`flex  w-7 h-7 items-center justify-center rounded-full ${
+              isHover.likes ? 'bg-[#F9595F] bg-opacity-25' : ''
+            }`}
+          >
+            <div className='w-5 h-4 mt-1'>
+              {isHover.likes ? (
+                <img
+                  src={redBorderHeart}
+                  className='w-full h-full object-cover '
+                />
+              ) : (
+                <img src={emptyHeart} className='w-full h-full object-cover ' />
+              )}
+            </div>
+          </div>
+          <p className={isHover.likes ? 'text-[#F9595F]' : ''}>{post.likes}</p>
         </div>
       </div>
     </div>
